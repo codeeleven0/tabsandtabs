@@ -8,6 +8,9 @@ makes your tabs... better?
 - particle animations in *searchbar*
 - a small launchpad/command system to open webpages quicker, try `!help`!
 
+# usage
+go to [https://codeeleven0.github.io/tabsandtabs](https://codeeleven0.github.io/tabsandtabs) to use tabsandtabs.
+
 # thanks to
 - vanilla disintegrate
 - google fonts
