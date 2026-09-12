@@ -6,7 +6,8 @@
     <title>tabsandtabs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barrio&display=swap" rel="stylesheet">    <script src="https://cdn.jsdelivr.net/npm/vanilla-disintegrate@latest/dist/vanilla-disintegrate.iife.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-disintegrate@latest/dist/vanilla-disintegrate.iife.min.js"></script>
     <style>
         * {
             font-family: system-ui, sans-serif;
@@ -61,6 +62,46 @@
         #date {
             font-size: 3vh;
         }
+
+        #searchbar {
+            position: fixed;
+            z-index: 999;
+            top: 50%;
+            width: 100%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        #searchbar, #input-pill {
+            font-family: "Inter", system-ui, sans-serif;
+        }
+        #input-pill {
+            width: 100%;
+            color: white;
+            text-align: center;
+            background: transparent;
+            border: none;
+            height: 100%;
+            margin: auto;
+            outline: none;
+            align-self: center;
+            font-size: 1.5em;
+        }
+        a {
+            color: gray;
+            text-decoration: underline;
+        }
+        #credit {
+            color: gray;
+            bottom: 1ch;
+            right: 1ch;
+            position: absolute;
+        }
+        #credit2 {
+            color: gray;
+            bottom: 1ch;
+            left: 1ch;
+            position: absolute;
+        }
     </style>
 
 </head>
@@ -70,9 +111,14 @@
             <div id="clock"></div>
             <div id="date"></div>
         </div>
+        <div id="searchbar">
+            <input type="text" id="input-pill" placeholder="Search anything" >
+        </div>
+        <div id="credit">Images: <a href="https://picsum.photos">Lorem Picsum</a> | Search: <a href="https://duckduckgo.com">DuckDuckGo</a></div>
     </div>
     <script defer>
-        const effects = new VanillaDisintegrate.Disintegrator({ preset: 'scatter' });
+        const input = document.querySelector("#input-pill");
+        const effects = new VanillaDisintegrate.Disintegrator({ preset: 'scatter', sound: false });
         function picsum() {
             let url = `https://picsum.photos/${window.outerWidth}/${window.outerHeight}?salt=${Math.ceil(Math.random() * 1024)}`;
             let tint = document.querySelector("#tint");
@@ -97,8 +143,25 @@
             date.innerText = d.toLocaleDateString();
             clock.innerText = d.toLocaleTimeString();
         }
-        function main() {
-        }
+
+        function goURL(href) {
+            effects.remove(input);
+            setTimeout(() => {
+                window.location.href = href;
+            }, 1000);
+        } 
+        input.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") {
+                try {
+                    let url = new URL(input.value);
+                    if (url) {
+                        goURL(url.href);
+                    }
+                } catch {
+                    goURL(`https://duckduckgo.org/?q=${input.value}`);
+                }
+            }
+        });
         picsum();
         loaddate();
         effects.restore(document.querySelector("#dateview"));

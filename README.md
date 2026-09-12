@@ -13,5 +13,8 @@ makes your tabs... better?
 - hack club
 - picsum photos
 
+# ai usage
+only one expression, rest is coded by me
+
 # thank you
 did i pass the vibe check? if so, leave a star 😉
