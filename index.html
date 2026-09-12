@@ -6,11 +6,12 @@
     <title>tabsandtabs</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barrio&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/vanilla-disintegrate@latest/dist/vanilla-disintegrate.iife.min.js"></script>
     <style>
         * {
-            font-family: system-ui, sans-serif;
+            font-family: "Inter", system-ui, sans-serif;
+            user-select: none;
         }
         html, body {
             width: 100%;
@@ -53,7 +54,7 @@
             color: white;
         }
         #clock, #date {
-            font-family: "Barrio", system-ui, sans-serif;
+            font-family: "Inter", system-ui, sans-serif;
         }
         #clock {
             font-weight: bolder;
@@ -102,6 +103,10 @@
             left: 1ch;
             position: absolute;
         }
+        #wild-note {
+            color: gray;
+            text-align: center;
+        }
     </style>
 
 </head>
@@ -112,7 +117,8 @@
             <div id="date"></div>
         </div>
         <div id="searchbar">
-            <input type="text" id="input-pill" placeholder="Search anything" >
+            <input type="text" id="input-pill" placeholder="Search anything or use the launchpad (!)" >
+            <div id="wild-note"></div>
         </div>
         <div id="credit">Images: <a href="https://picsum.photos">Lorem Picsum</a> | Search: <a href="https://duckduckgo.com">DuckDuckGo</a></div>
     </div>
@@ -150,8 +156,54 @@
                 window.location.href = href;
             }, 1000);
         } 
+        var wild = false;
+        var wildelem = document.querySelector("#wild-note");
+        var command = "";
+        var commands = {
+            "help": () => {
+                wildelem.innerText = "news github reddit gemini chatgpt youtube hackclub help"
+            },
+            "news": () => goURL("https://news.ycombinator.com"),
+            "github": () => goURL("https://github.com"),
+            "reddit": () => goURL("https://reddit.com"),
+            "gemini": () => goURL("https://gemini.google.com"),
+            "chatgpt": () => goURL("https://chatgpt.com"),
+            "youtube": () => goURL("https://youtube.com"),
+            "hackclub": () => goURL("https://hackclub.com")
+        };
+        var evaluateInput = () => {
+            if (input.value.startsWith("!")){
+                if (!wild) {
+                    wild = true;
+                    wildelem.innerText = "launchpad engaged!";
+                    command = "";
+                }
+                let val = input.value.slice(1);
+                if (val !== "") {
+                    command = val;
+                } else {
+                    wildelem.innerText = "launchpad engaged!";
+                    command = "";
+                }
+            } else {
+                wild = false;
+                wildelem.innerText = "";
+                command = "";
+            }
+        };
+        input.addEventListener("input", evaluateInput);
         input.addEventListener("keypress", (e) => {
             if (e.key === "Enter") {
+                evaluateInput();
+                if (wild) {
+                    if (Object.keys(commands).includes(command)) {
+                        wildelem.innerText = "launching!";
+                        commands[command]();
+                    } else {
+                        commands["help"]();
+                    }
+                    return;
+                }
                 try {
                     let url = new URL(input.value);
                     if (url) {
@@ -167,7 +219,6 @@
         effects.restore(document.querySelector("#dateview"));
         setInterval(picsum, 10000);
         setInterval(loaddate, 1000);
-        setTimeout(main, 300);
     </script>
 </body>
 </html>

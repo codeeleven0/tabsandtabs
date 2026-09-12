@@ -5,6 +5,8 @@ makes your tabs... better?
 - dynamic backgrounds pulled from picsum and loaded with a cool focus animation
 - uses particle animations in dateview
 - image caching before load so it doesn't look clunky
+- particle animations in *searchbar*
+- a small launchpad/command system to open webpages quicker, try `!help`!
 
 # thanks to
 - vanilla disintegrate
@@ -12,6 +14,7 @@ makes your tabs... better?
 - stardance
 - hack club
 - picsum photos
+- duckduckgo
 
 # ai usage
 only one expression, rest is coded by me
